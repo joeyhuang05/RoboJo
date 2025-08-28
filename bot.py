@@ -5,9 +5,12 @@ from dotenv import load_dotenv
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        print('Logged on as {0}!'.format(self.user))
+        print('✅ Logged on as {0}!'.format(self.user))
 
     async def on_message(self, message):
+        log_channel = discord.utils.get(message.guild.text_channels, name='bot-log')
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         if message.author == self.user:
             return
         
@@ -36,8 +39,13 @@ class MyClient(discord.Client):
         
         # delete channel
         if message.content.startswith('>>del'):
+            channel_to_delete = message.channel
             try:
-                await message.channel.delete(reason='deleted by a bot')
+                await channel_to_delete.delete(reason='deleted by a bot')
+
+                if log_channel:
+                    log_message = f"```\n=== Channel #{channel_to_delete.name} was deleted by {message.author} at {timestamp} ===\n```"
+                    await log_channel.send(log_message)
             except discord.Forbidden:
                 await message.channel.send('⚠️ `{0}` needs permission to delete channels'.format(self.user))
                 
@@ -54,7 +62,6 @@ class MyClient(discord.Client):
             try:
                 deleted = await message.channel.purge(limit=n+1)
 
-                log_channel = discord.utils.get(message.guild.text_channels, name='bot-log')
                 if log_channel:
                     log_lines = []
                     for msg in reversed(deleted[1:]):
@@ -72,7 +79,6 @@ class MyClient(discord.Client):
                                 if any(filename.endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.mp4', '.mov', '.avi', '.mkv', '.flv', '.wmv']):
                                     log_lines.append(f"{msg.author}: [image / video]")
                     
-                    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     header = f"=== {len(deleted)-1} messages were deleted at {timestamp} ==="
                     log_message = "```\n" + header + '\n' + '\n'.join(log_lines) + "\n```"
 

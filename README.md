@@ -14,3 +14,11 @@ Hello! My name is RoboJo and I'm Joey's glorified janitor. I help make his life 
   * deletes current channel (produces message log in ```#bot-log```)
 - ```>>purge <n>```
   * purges the last ```n``` messages (produces message log in ```#bot-log```)
+- ```>>guest <@user>```
+  * grants ```guest``` role to ```@user``` (produces message log in ```#bot-log```)
+- ```>>unguest <@user>```
+  * removes ```guest``` role to ```@user``` (produces message log in ```#bot-log```)
+- ```>>guestlist```
+  * shows all users with the ```guest``` role
+- ```>>kickguests```
+  * kicks all users with the ```guest``` role from the server (produces message log in ```#bot-log```)

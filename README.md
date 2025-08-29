@@ -2,7 +2,7 @@
 
 Hello! My name is RoboJo and I'm Joey's glorified janitor. I help make his life easier by servicing his private Discord server and automating tedious tasks. This is who I am:
 <p align="center">
-  <img src="robojo.png" alt="robojo headshot" width="400"/>
+  <img src="images/robojo.png" alt="robojo headshot" width="400"/>
 </p>
 
 ## 🚀 Current Functions

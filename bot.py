@@ -16,7 +16,14 @@ class MyClient(discord.Client):
         
         # test active
         if message.content.startswith('>>test'):
-            await message.channel.send('`{0}` is active and ready to make your life easier!'.format(self.user))
+            await message.channel.send('Hello `{0}`, `{1}` is active and ready to make your life easier!'.format(message.author, self.user))
+
+            try:
+                file_path = 'images/robojo.png'
+                if os.path.exists(file_path):
+                    await message.channel.send(file=discord.File(file_path))
+            except Exception as e:
+                await message.channel.send(f"⚠️ I can't seem to find a picture of myself to send")
 
         # archive channel
         if message.content.startswith('>>archive'):

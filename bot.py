@@ -25,7 +25,7 @@ class MyClient(discord.Client):
             except discord.Forbidden:
                 await message.channel.send('⚠️ `{0}` needs permission to delete messages'.format(self.user))
 
-            await message.channel.send('```============= This channel is now archived =============```')
+            await message.channel.send('```css\n[ ========== This channel is now archived ========== ]```')
 
             archive_category = discord.utils.get(message.guild.categories, name='archive')
             if archive_category is None:
@@ -44,7 +44,7 @@ class MyClient(discord.Client):
                 await channel_to_delete.delete(reason='deleted by a bot')
 
                 if log_channel:
-                    log_message = f"```\n=== Channel #{channel_to_delete.name} was deleted by {message.author} at {timestamp} ===\n```"
+                    log_message = f"```css\n[ Channel #{channel_to_delete.name} was deleted by {message.author} at {timestamp} ]\n```"
                     await log_channel.send(log_message)
             except discord.Forbidden:
                 await message.channel.send('⚠️ `{0}` needs permission to delete channels'.format(self.user))
@@ -79,8 +79,11 @@ class MyClient(discord.Client):
                                 if any(filename.endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.mp4', '.mov', '.avi', '.mkv', '.flv', '.wmv']):
                                     log_lines.append(f"{msg.author}: [image / video]")
                     
-                    header = f"=== {len(deleted)-1} messages were deleted at {timestamp} ==="
-                    log_message = "```\n" + header + '\n' + '\n'.join(log_lines) + "\n```"
+                    if n == 1:
+                        header = f"[ {n} message was purged from #{message.channel.name} at {timestamp} ]"
+                    else:
+                        header = f"[ {n} messages were purged from #{message.channel.name} at {timestamp} ]"
+                    log_message = "```css\n" + header + '``````' + '\n'.join(log_lines) + "\n```"
 
                     await log_channel.send(log_message)
             except discord.Forbidden:

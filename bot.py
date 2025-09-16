@@ -29,6 +29,28 @@ class MyClient(discord.Client):
 
             return
 
+        # unarchive channel
+        if message.content.startswith('>>unarchive'):
+            try:
+                await message.delete()
+                await message.channel.edit(category=None, reason='unarchived by bot')
+                await message.channel.edit(position=0)
+
+                overwrite = message.channel.overwrites_for(message.guild.default_role)
+                overwrite.view_channel = True
+                overwrite.send_messages = True
+
+                await message.channel.set_permissions(message.guild.default_role, overwrite=overwrite)
+
+                await message.channel.send('```css\n[ ============ channel unarchived ============ ]```')
+
+                log_message = f"```css\n[ Channel #{message.channel.name} was unarchived by {message.author} at {timestamp} ]\n```"
+                await log_channel.send(log_message)
+            except Exception as e:
+                await message.channel.send('⚠️ Unexpected error occurred while unarchiving this channel')
+            
+            return
+
         # archive channel
         if message.content.startswith('>>archive'):
             try:
@@ -182,7 +204,7 @@ class MyClient(discord.Client):
 
             return
         
-
+        # kick guests
         if message.content.startswith('>>kickguests'):
             guests = list(guest_role.members)
 

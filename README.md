@@ -10,6 +10,8 @@ Hello! My name is RoboJo and I'm Joey's glorified janitor. I help make his life 
   * tests if RoboJo is active
 - ```>>archive```
   * archives current channel
+- ```>>unarchive```
+  * unarchives current channel
 - ```>>del```
   * deletes current channel (produces message log in ```#bot-log```)
 - ```>>purge <n>```
